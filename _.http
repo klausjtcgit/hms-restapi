@@ -11,3 +11,38 @@
 GET {{ baseUrl }}
 
 
+
+# % +=============================================================================+
+# % > employees >                                                                ||
+# % +=============================================================================+
+##  % +---------------------------------------------------------------------------+
+##  % > employees > register > (req.body.{...employee})                           |
+### % +---------------------------------------------------------------------------+
+POST {{baseUrl}}/employees
+Content-Type: application/json
+
+{ "firstName": "Yohannes", "lastName": "tesafy", "middleName": "niguse", "phone": "254114540081", "jobTitle": "software admin", "code": 696969, "password": "password", "email": "klausJTC@gmail.com", "isActive": true }
+
+##  % +---------------------------------------------------------------------------+
+##  % > employees > find_by_filter > (req.query.{...filter}                       |
+### % +---------------------------------------------------------------------------+
+GET {{baseUrl}}/employees?isActive=false&jobTitle=housekeeper
+
+##  % +---------------------------------------------------------------------------+
+##  % > employees > find_by__id > (req.path._id)                                  |
+### % +---------------------------------------------------------------------------+
+GET {{baseUrl}}/employees/657abe0c8ace26d4d1c6151f
+
+##  % +---------------------------------------------------------------------------+
+##  % > employees > find_by__ids > (req.query.[..._ids])                               |
+### % +---------------------------------------------------------------------------+
+GET {{baseUrl}}/employees/_ids?_ids=657abe0c8ace26d4d1c6151f&_ids=657abd9b8ace26d4d1c6147e&_ids=657abd9b8ace26d4d1c61482
+
+
+##  % +---------------------------------------------------------------------------+
+##  % > employees > update_by__id > (req.path._id, req.body.{...update})          |
+### % +---------------------------------------------------------------------------+
+PATCH {{baseUrl}}/employees/657abe0c8ace26d4d1c6151f
+Content-Type: application/json
+
+{ "password": "password" }

@@ -1,5 +1,4 @@
-import jwt, { Secret } from "jsonwebtoken";
-import { TOKEN_KEY } from "../configuration";
+export type TMap = Record<string, any>;
 
 /**
  * @method isEmpty
