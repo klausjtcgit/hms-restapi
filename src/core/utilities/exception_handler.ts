@@ -7,21 +7,15 @@ import { ValidationException } from "../exceptions/validation_exception";
 import { isEmpty } from "./utilities";
 
 export function globalExceptionHandler(error: any, next: NextFunction) {
-  console.log(
-    "🚀 ~ file: exception_handler.ts:10 ~ globalExceptionHandler ~ error:",
-    JSON.stringify(error)
-  );
   let _error: ResponseModel;
 
   if (error.result && error.result.errors) {
-    _error = { ...error, meta: { ...error } };
+    _error = { ...error };
   } else {
-    let _status: HTTPStatusCodes =
-      error.status ?? HTTPStatusCodes.INTERNAL_SERVER_ERROR;
+    let _status: HTTPStatusCodes = error.status ?? HTTPStatusCodes.INTERNAL_SERVER_ERROR;
     let _type: ErrorTypes = error.type ?? ErrorTypes.INTERNAL_ERROR;
     let _message =
-      error.message ||
-      "😅 Whoopsie Daisy! Something unknown has happened. try refreshing 🔄.";
+      error.message || "😅 Whoopsie Daisy! Something unknown has happened. try refreshing 🔄.";
     let _validationException: ValidationException[] = [];
 
     if (error.status) _status = error.status;
@@ -53,10 +47,7 @@ export function globalExceptionHandler(error: any, next: NextFunction) {
                 ? `Invalid datatype for the field: '${key}'. Expected '${error.errors[key].kind}' but received ${error.errors[key].valueType}.`
                 : `Invalid field: '${key}'. Make sure to provide a valid data`,
             field: key,
-            value:
-              error.errors[key].kind === "required"
-                ? null
-                : error.errors[key].value,
+            value: error.errors[key].kind === "required" ? null : error.errors[key].value,
           })
         );
         error.errors[key];
@@ -80,15 +71,10 @@ export function globalExceptionHandler(error: any, next: NextFunction) {
     });
   }
 
-  // _error.meta = error;
-
   next(_error);
 }
 
-export function notFoundExceptionHandler(
-  resource: string,
-  filter?: any
-): never {
+export function notFoundExceptionHandler(resource: string, filter?: any): never {
   throw new ResponseModel({
     success: false,
     status: HTTPStatusCodes.NOT_FOUND,
@@ -107,9 +93,7 @@ export function notFoundExceptionHandler(
   });
 }
 
-export function validationExceptionHandler(
-  invalids: ValidationException[]
-): never {
+export function validationExceptionHandler(invalids: ValidationException[]): never {
   throw new ResponseModel({
     success: false,
     status: HTTPStatusCodes.UNPROCESSABLE_ENTITY,
@@ -119,7 +103,7 @@ export function validationExceptionHandler(
   });
 }
 
-export function unauthenticatedExceptionHandler(message?: string): never {
+export function unauthenticatedExceptionHandler(message?: string, details?: any): never {
   throw new ResponseModel({
     success: false,
     status: HTTPStatusCodes.UNAUTHORIZED,
@@ -129,12 +113,12 @@ export function unauthenticatedExceptionHandler(message?: string): never {
           type: ErrorTypes.UNAUTHORIZED,
           message:
             message ||
-            `🚫 Unauthorized access. You don't have the necessary permissions to access this resource.`,
-          details: {
+            `🔒 Authentication required to access the requested resource, please send request with accessToken.`,
+          details: details || {
             suggestions: [
-              "Make sure you have the necessary permissions for this action.",
               "Ensure that you are logged in with the correct account.",
               "Review the documentation for proper authentication steps.",
+              "Maybe your account has been temporarily suspended or disabled. If so contact you supervisor/admin",
               "If you believe this is an error, contact support for further assistance.",
             ],
           },
@@ -144,7 +128,7 @@ export function unauthenticatedExceptionHandler(message?: string): never {
   });
 }
 
-export function unauthorizedExceptionHandler(message?: string): never {
+export function unauthorizedExceptionHandler(message?: string, details?: any): never {
   throw new ResponseModel({
     success: false,
     status: HTTPStatusCodes.UNAUTHORIZED,
@@ -154,12 +138,11 @@ export function unauthorizedExceptionHandler(message?: string): never {
           type: ErrorTypes.UNAUTHENTICATED,
           message:
             message ||
-            `🔒 Authentication required to access the requested resource, please send request with accessToken.`,
-          details: {
+            `🚫 Unauthorized access. You don't have the necessary permissions to access this resource.`,
+          details: details || {
             suggestions: [
-              "Make sure to have accesskey, then get your accesskey by logging in",
-              "if you don't have an account at all pleas contact the admin/support team go register a new account.",
-              "Check if your account has been temporarily suspended or disabled. If so contact you supervisor/admin",
+              "Check if you have the required permission for this action and or resource.",
+              "If you believe this is an error, contact support for further assistance.",
             ],
           },
         }),

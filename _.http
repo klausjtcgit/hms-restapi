@@ -2,13 +2,49 @@
 # % > varibales                                                                  ||
 # % +=============================================================================+
 @baseUrl = http://localhost:5000
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhYmUwYzhhY2UyNmQ0ZDFjNjE1MWYiLCJmaXJzdE5hbWUiOiJ5b2hhbm5lcyIsImxhc3ROYW1lIjoidGVzYWZ5IiwibWlkZGxlTmFtZSI6Im5pZ3VzZSIsInBob25lIjoiMjU0MTE0NTQwMDgxIiwiam9iVGl0bGUiOiJzb2Z0d2FyZSBhZG1pbiIsImNvZGUiOiI2OTY5NjkiLCJwYXNzd29yZCI6IiQyYSQxMCR2QTA2SzhocTlBQ0VvZmRuUFVkNUF1cTRHdFUuM0xCYzZTTW5vbWY5YVd6T08ydElkd3VycSIsImVtYWlsIjoia2xhdXNKVENAZ21haWwuY29tIiwiaXNBY3RpdmUiOnRydWUsInBlcm1pc3Npb25zIjpbInJlZ2lzdGVyIGd1ZXN0IiwidXBkYXRlIGd1ZXN0IGluZm8iLCJjcmVhdGUgcm9vbSIsInVwZGF0ZSByb29tIGluZm8iLCJ1cGRhdGUgcm9vbSBzdGF0dXMiLCJib29raW5nIGEgcm9vbSIsImdpZnQgYm9va2luZyBhIHJvb20iLCJ2b2lkIGJvb2tpbmcgYSByb29tIiwidXBkYXRlIGJvb2tpbmcgaW5mbyIsInVwZGF0ZSBib29raW5nIHByaWNlIiwiYWNjZXB0IGFjY29tbW9kYXRpb24gcGF5bWVudCIsInVwZGF0ZSBhY2NvbW1vZGF0aW9uIHBheW1lbnQiLCJtYWtlIG1lbnUiLCJ1cGRhdGUgbWVudSIsInVwZGF0ZSBtZW51IHByaWNlIiwicG9zdCBvcmRlciIsInBvc3Qgb3JkZXIiLCJwb3N0IG9yZGVyIiwidXBkYXRlIG9yZGVyIiwidXBkYXRlIGFsbCBvcmRlciIsImdpZnQgb3JkZXIiLCJ2b2lkIG9yZGVyIiwidHJhbnNmZXIgb3JkZXIiLCJhY2NlcHQgcmVzdGF1cmFudCBwYXltZW50IiwidXBkYXRlIHJlc3RhdXJhbnQgcGF5bWVudCIsImFkZCBpdGVtIHRvIGludmVudG9yeSIsInVwZGF0ZSBpdGVtIGluZm8iLCJtYWtlIG1lbnUgdnMgcmVjaXBlIiwic3BvaWxhZ2UgbWlzY2VsbGFuZW91cyB1c2FnZSIsImlzc3VlIGl0ZW0iLCJ1cGRhdGUgaXNzdWUiLCJwdXJjaGFzZSBpdGVtIiwidXBkYXRlIHB1cmNoYXNlIiwicmVnaXN0ZXIgZW1wbG95ZWUiLCJ1cGRhdGUgZW1wbG95ZWUgaW5mbyIsInVwZGF0ZSBlbXBsb3llZSBwZXJtaXNzaW9uIiwiYWRkIGV4cGVuc2UiLCJ1cGRhdGUgZXhwZW5zZSIsInZlcmlmeSBwYXltZW50IiwiZ2VuZXJhdGUgbXkgcmVwb3J0IiwiZ2VuZXJhdGUgYWNjb21tb2RhdGlvbiByZXBvcnQiLCJnZW5lcmF0ZSByZXN0YXVyYW50IHJlcG9ydCIsImdlbmVyYXRlIGludmVudG9yeSByZXBvcnQiLCJnZW5lcmF0ZSBnZW5lcmFsIHJlcG9ydCJdLCJjcmVhdGVkQXQiOiIyMDIzLTEyLTE0VDA4OjMyOjEzLjkwNFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTEyLTE0VDA4OjMyOjEzLjkwNFoiLCJkZWxldGVkIjpmYWxzZSwib3V0ZGF0ZWQiOmZhbHNlLCJfX3YiOjAsImlhdCI6MTcwMjU0MzI1MCwiZXhwIjoxNzI0MTQzMjUwfQ.GP-GEA1DFKNSz4Q7N7GTt6zRXK3T5TXOpz3VCVWWxDM
 
 
 
 # % +=============================================================================+
 # % > testing > ()                                                               ||
 # % +=============================================================================+
+##  % +---------------------------------------------------------------------------+
+##  % > testing > somthinng_that_works > ()                                       |
+### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}
+
+##  % +---------------------------------------------------------------------------+
+##  % > testing > somthinng_that_does_works > ()                                  |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/not_working_route_or_url
+
+
+
+# % +=============================================================================+
+# % > authentication                                                             ||
+# % +=============================================================================+
+##  % +---------------------------------------------------------------------------+
+##  % > authentication > simple_login > (req.body.code)                           |
+### % +---------------------------------------------------------------------------+
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "code": "123474"} 
+
+##  % +---------------------------------------------------------------------------+
+##  % > authentication > advance_login > (req.body.password, req.body.phone)      |
+### % +---------------------------------------------------------------------------+
+POST {{baseUrl}}/auth/login/advance
+Content-Type: application/json
+
+{ "phone": "254114540081", "password": "password" }
+
+##  % +---------------------------------------------------------------------------+
+##  % > authentication > verify_employee > ()                                     |
+### % +---------------------------------------------------------------------------+
+POST {{baseUrl}}/auth/somethingSecure
+Authorization: Bearer {{ accessToken }}
 
 
 

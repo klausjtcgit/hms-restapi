@@ -7,7 +7,7 @@ import { databaseConnection } from "./core/database";
 import { IRoute } from "./core/interfaces/routes.interface";
 import { errorMiddleware } from "./core/middlewares/error.middleware";
 import { notFoundMiddleware } from "./core/middlewares/not_found.middleware";
-import { datetimeString, timeStampString } from "./core/utilities/utilities";
+import { TMap, datetimeString, stringifyJson } from "./core/utilities/utilities";
 
 export class App {
   public app: express.Application;
@@ -27,26 +27,16 @@ export class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.info(`\n${"*".repeat(74)}`);
-      console.info(
-        `* 🕒 ${datetimeString()} 🚀 app: running @http://localhost:${
-          this.port
-        }${" ".repeat(16)}`
-      );
-      console.info(`*${"_".repeat(73)}`);
-      console.info(`*${" ".repeat(73)}`);
+      console.info(`\n🕒 ${datetimeString()} 🚀 app: running @http://localhost:${this.port}`);
     });
   }
 
   public async closeDatabaseConnection(): Promise<void> {
     try {
       await disconnect();
-      console.info(`* 🕒 ${datetimeString()} 🚀 MongoDB: disconnected`);
+      console.info(`🕒 ${datetimeString()} 🚀 MongoDB: disconnected`);
     } catch (error) {
-      console.error(
-        `* 🕒 ${datetimeString()} 🚀 MongoDB: closing database error`,
-        error
-      );
+      console.error(`🕒 ${datetimeString()} 🚀 MongoDB: closing database error`, error);
     }
   }
 
@@ -60,9 +50,7 @@ export class App {
     }
 
     await connect(databaseConnection.url);
-    console.info(
-      `* 🕒 ${datetimeString()} 🚀 MongoDB: @${databaseConnection.url}`
-    );
+    console.info(`🕒 ${datetimeString()} 🚀 MongoDB: @${databaseConnection.url}`);
   }
   private initializeMiddlewares() {
     this.app.use(cors());
