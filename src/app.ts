@@ -7,7 +7,6 @@ import { databaseConnection } from "./core/database";
 import { IRoute } from "./core/interfaces/routes.interface";
 import { errorMiddleware } from "./core/middlewares/error.middleware";
 import { notFoundMiddleware } from "./core/middlewares/not_found.middleware";
-import { TMap, datetimeString, stringifyJson } from "./core/utilities/utilities";
 
 export class App {
   public app: express.Application;
@@ -27,16 +26,18 @@ export class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.info(`\n🕒 ${datetimeString()} 🚀 app: running @http://localhost:${this.port}`);
+      console.info(
+        `\n🕒 ${new Date().toLocaleString()} 🚀 app: running @http://localhost:${this.port}`
+      );
     });
   }
 
   public async closeDatabaseConnection(): Promise<void> {
     try {
       await disconnect();
-      console.info(`🕒 ${datetimeString()} 🚀 MongoDB: disconnected`);
+      console.info(`🕒 ${new Date().toLocaleString()} 🚀 MongoDB: disconnected`);
     } catch (error) {
-      console.error(`🕒 ${datetimeString()} 🚀 MongoDB: closing database error`, error);
+      console.error(`🕒 ${new Date().toLocaleString()} 🚀 MongoDB: closing database error`, error);
     }
   }
 
@@ -50,7 +51,7 @@ export class App {
     }
 
     await connect(databaseConnection.url);
-    console.info(`🕒 ${datetimeString()} 🚀 MongoDB: @${databaseConnection.url}`);
+    console.info(`🕒 ${new Date().toLocaleString()} 🚀 MongoDB: @${databaseConnection.url}`);
   }
   private initializeMiddlewares() {
     this.app.use(cors());

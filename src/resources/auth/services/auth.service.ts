@@ -18,10 +18,7 @@ export class AuthService implements IAuthService {
           expiresIn: "6hr",
         });
 
-        return {
-          employee: employee,
-          accessToken: accessToken,
-        };
+        return { employee: employee.toObject(), accessToken: accessToken };
       }
     }
   };
@@ -47,10 +44,7 @@ export class AuthService implements IAuthService {
             expiresIn: "6hr",
           });
 
-          return {
-            employee: employee,
-            accessToken: accessToken,
-          };
+          return { employee: employee.toObject(), accessToken: accessToken };
         }
       }
     }

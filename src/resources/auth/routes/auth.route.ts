@@ -3,7 +3,7 @@ import { AuthController } from "../controllers/auth.controller";
 import { IRoute } from "../../../core/interfaces/routes.interface";
 import { authMiddleware } from "../../../core/middlewares/auth.middleware";
 import { permissionVerifierMiddleware } from "../../../core/middlewares/permission_verifier.middleware";
-import { EEmployeePermission } from "../../employees/models/employee.model";
+import { EmployeePermissions } from "../../../core/constants";
 
 export class AuthRoute implements IRoute {
   public path = "";
@@ -21,7 +21,7 @@ export class AuthRoute implements IRoute {
     this.router.post(
       `${this.path}/somethingSecure/`,
       authMiddleware,
-      permissionVerifierMiddleware([EEmployeePermission.verifyPayment]),
+      permissionVerifierMiddleware([EmployeePermissions.verifyPayment]),
       this.authController.somethingSecure
     );
   }

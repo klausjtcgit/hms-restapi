@@ -3,15 +3,15 @@ import {
   globalExceptionHandler,
   unauthorizedExceptionHandler,
 } from "../utilities/exception_handler";
-import { EEmployeePermission } from "../../resources/employees/models/employee.model";
+import { EmployeePermissions } from "../constants";
 
-export const permissionVerifierMiddleware = (requiredPermissions: EEmployeePermission[]) => {
+export const permissionVerifierMiddleware = (requiredPermissions: EmployeePermissions[]) => {
   return (req: Request, _res: Response, next: NextFunction): void => {
     try {
       const decoded = req.body.$decoded;
-      const notPermitted: EEmployeePermission[] = [];
+      const notPermitted: EmployeePermissions[] = [];
 
-      requiredPermissions.forEach((requiredPermission: EEmployeePermission) => {
+      requiredPermissions.forEach((requiredPermission: EmployeePermissions) => {
         if (!decoded.permissions.includes(requiredPermission))
           notPermitted.push(requiredPermission);
       });

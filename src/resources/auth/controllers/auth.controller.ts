@@ -24,7 +24,12 @@ export class AuthController {
           new ResponseModel({
             success: true,
             status: HTTPStatusCodes.OK,
-            result: { data: { result } },
+            result: {
+              data: {
+                employee: { ...result.employee, password: "********", code: "*****" },
+                accessToken: result.accessToken,
+              },
+            },
           })
         );
       } else
@@ -76,7 +81,12 @@ export class AuthController {
           new ResponseModel({
             success: true,
             status: HTTPStatusCodes.OK,
-            result: { data: { result } },
+            result: {
+              data: {
+                employee: { ...result.employee, password: "********", code: "*****" },
+                accessToken: result.accessToken,
+              },
+            },
           })
         );
       } else validationExceptionHandler(invalids);

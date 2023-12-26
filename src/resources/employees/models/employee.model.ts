@@ -8,509 +8,25 @@ import {
   model,
 } from "mongoose";
 import { compare, genSaltSync, hashSync } from "bcryptjs";
-
-export enum EJobTitles {
-  generalManager = "general manager",
-  supervisor = "supervisor",
-  accommodationSupervisor = "accommodation supervisor",
-  reception = "reception",
-  housekeeper = "housekeeper",
-  security = "security",
-  restaurantSupervisor = "restaurant supervisor",
-  cashier = "cashier",
-  waiter = "waiter",
-  chef = "chef",
-  cook = "cook",
-  steward = "steward",
-  trainee = "trainee",
-  handyman = "handyman",
-  storekeeper = "storekeeper",
-  softwareAdmin = "software admin",
-}
-
-export const EmployeeRoleMapping: Record<string, EJobTitles> = {
-  "general manager": EJobTitles.generalManager,
-  supervisor: EJobTitles.supervisor,
-  "accommodation supervisor": EJobTitles.accommodationSupervisor,
-  reception: EJobTitles.reception,
-  housekeeper: EJobTitles.housekeeper,
-  security: EJobTitles.security,
-  "restaurant supervisor": EJobTitles.restaurantSupervisor,
-  cashier: EJobTitles.cashier,
-  waiter: EJobTitles.waiter,
-  chef: EJobTitles.chef,
-  cook: EJobTitles.cook,
-  steward: EJobTitles.steward,
-  trainee: EJobTitles.trainee,
-  handyman: EJobTitles.handyman,
-  storekeeper: EJobTitles.storekeeper,
-  "software admin": EJobTitles.softwareAdmin,
-};
-
-export enum EEmployeePermission {
-  registerGuest = "register guest",
-  updateGuestInfo = "update guest info",
-  createRoom = "create room",
-  updateRoomInfo = "update room info",
-  updateRoomStatus = "update room status",
-
-  bookingARoom = "booking a room",
-  giftBookingARoom = "gift booking a room",
-  voidBookingARoom = "void booking a room",
-  updateBookingInfo = "update booking info",
-  updateBookingPrice = "update booking price",
-
-  acceptAccommodationPayment = "accept accommodation payment",
-  updateAccommodationPayment = "update accommodation payment",
-
-  makeMenu = "make menu",
-  updateMenu = "update menu",
-  updateMenuPrice = "update menu price",
-
-  viewMyOrder = "post order",
-  viewAllOrder = "post order",
-  postOrder = "post order",
-  updateOrder = "update order",
-  updateAllOrder = "update all order",
-  giftOrder = "gift order",
-  voidOrder = "void order",
-  transferOrder = "transfer order",
-
-  acceptRestaurantPayment = "accept restaurant payment",
-  updateRestaurantPayment = "update restaurant payment",
-
-  addItemToInventory = "add item to inventory",
-  updateItemInfo = "update item info",
-
-  makeMenuVsRecipe = "make menu vs recipe",
-  spoilageMiscellaneousUsage = "spoilage miscellaneous usage",
-
-  issueItem = "issue item",
-  updateIssue = "update issue",
-
-  purchaseItem = "purchase item",
-  updatePurchase = "update purchase",
-
-  registerEmployee = "register employee",
-  updateEmployeeInfo = "update employee info",
-  updateEmployeePermission = "update employee permission",
-
-  addExpense = "add expense",
-  updateExpense = "update expense",
-
-  verifyPayment = "verify payment",
-  generateMyReport = "generate my report",
-  generateAccommodationReport = "generate accommodation report",
-  generateRestaurantReport = "generate restaurant report",
-  generateInventoryReport = "generate inventory report",
-  generateGeneralReport = "generate general report",
-}
-
-export let defaultPermission: Record<string, EEmployeePermission[]> = {
-  "general manager": [
-    EEmployeePermission.registerGuest,
-    EEmployeePermission.updateGuestInfo,
-
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.bookingARoom,
-    EEmployeePermission.giftBookingARoom,
-    EEmployeePermission.voidBookingARoom,
-    EEmployeePermission.updateBookingInfo,
-    EEmployeePermission.updateBookingPrice,
-
-    EEmployeePermission.acceptAccommodationPayment,
-    EEmployeePermission.updateAccommodationPayment,
-
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.issueItem,
-    EEmployeePermission.updateIssue,
-
-    EEmployeePermission.purchaseItem,
-    EEmployeePermission.updatePurchase,
-
-    EEmployeePermission.registerEmployee,
-    EEmployeePermission.updateEmployeeInfo,
-    EEmployeePermission.updateEmployeePermission,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.verifyPayment,
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateAccommodationReport,
-    EEmployeePermission.generateRestaurantReport,
-    EEmployeePermission.generateInventoryReport,
-    EEmployeePermission.generateGeneralReport,
-  ],
-  supervisor: [
-    EEmployeePermission.registerGuest,
-    EEmployeePermission.updateGuestInfo,
-
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.bookingARoom,
-    EEmployeePermission.giftBookingARoom,
-    EEmployeePermission.voidBookingARoom,
-    EEmployeePermission.updateBookingInfo,
-    EEmployeePermission.updateBookingPrice,
-
-    EEmployeePermission.acceptAccommodationPayment,
-    EEmployeePermission.updateAccommodationPayment,
-
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.issueItem,
-    EEmployeePermission.updateIssue,
-
-    EEmployeePermission.purchaseItem,
-    EEmployeePermission.updatePurchase,
-
-    EEmployeePermission.registerEmployee,
-    EEmployeePermission.updateEmployeeInfo,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateAccommodationReport,
-    EEmployeePermission.generateRestaurantReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  "accommodation supervisor": [
-    EEmployeePermission.registerGuest,
-    EEmployeePermission.updateGuestInfo,
-
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.bookingARoom,
-    EEmployeePermission.giftBookingARoom,
-    EEmployeePermission.voidBookingARoom,
-    EEmployeePermission.updateBookingInfo,
-    EEmployeePermission.updateBookingPrice,
-
-    EEmployeePermission.acceptAccommodationPayment,
-    EEmployeePermission.updateAccommodationPayment,
-
-    EEmployeePermission.registerEmployee,
-    EEmployeePermission.updateEmployeeInfo,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateAccommodationReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  reception: [
-    EEmployeePermission.registerGuest,
-    EEmployeePermission.updateGuestInfo,
-
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.bookingARoom,
-    EEmployeePermission.voidBookingARoom,
-    EEmployeePermission.updateBookingInfo,
-    EEmployeePermission.updateBookingPrice,
-
-    EEmployeePermission.acceptAccommodationPayment,
-    EEmployeePermission.updateAccommodationPayment,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateAccommodationReport,
-  ],
-  housekeeper: [
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.generateMyReport,
-  ],
-  security: [
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.generateMyReport,
-  ],
-  "restaurant supervisor": [
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.issueItem,
-    EEmployeePermission.updateIssue,
-
-    EEmployeePermission.purchaseItem,
-    EEmployeePermission.updatePurchase,
-
-    EEmployeePermission.registerEmployee,
-    EEmployeePermission.updateEmployeeInfo,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateRestaurantReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  cashier: [
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateRestaurantReport,
-  ],
-  waiter: [
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.generateMyReport,
-  ],
-  chef: [
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  cook: [
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  steward: [
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.generateMyReport,
-  ],
-  trainee: [
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.generateMyReport,
-  ],
-  handyman: [EEmployeePermission.updateRoomInfo, EEmployeePermission.generateMyReport],
-  storekeeper: [
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.issueItem,
-    EEmployeePermission.updateIssue,
-
-    EEmployeePermission.purchaseItem,
-    EEmployeePermission.updatePurchase,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateRestaurantReport,
-    EEmployeePermission.generateInventoryReport,
-  ],
-  "software admin": [
-    EEmployeePermission.registerGuest,
-    EEmployeePermission.updateGuestInfo,
-
-    EEmployeePermission.createRoom,
-    EEmployeePermission.updateRoomInfo,
-    EEmployeePermission.updateRoomStatus,
-
-    EEmployeePermission.bookingARoom,
-    EEmployeePermission.giftBookingARoom,
-    EEmployeePermission.voidBookingARoom,
-    EEmployeePermission.updateBookingInfo,
-    EEmployeePermission.updateBookingPrice,
-
-    EEmployeePermission.acceptAccommodationPayment,
-    EEmployeePermission.updateAccommodationPayment,
-
-    EEmployeePermission.makeMenu,
-    EEmployeePermission.updateMenu,
-    EEmployeePermission.updateMenuPrice,
-
-    EEmployeePermission.viewMyOrder,
-    EEmployeePermission.viewAllOrder,
-    EEmployeePermission.postOrder,
-    EEmployeePermission.updateOrder,
-    EEmployeePermission.updateAllOrder,
-    EEmployeePermission.giftOrder,
-    EEmployeePermission.voidOrder,
-    EEmployeePermission.transferOrder,
-
-    EEmployeePermission.acceptRestaurantPayment,
-    EEmployeePermission.updateRestaurantPayment,
-
-    EEmployeePermission.addItemToInventory,
-    EEmployeePermission.updateItemInfo,
-
-    EEmployeePermission.makeMenuVsRecipe,
-    EEmployeePermission.spoilageMiscellaneousUsage,
-
-    EEmployeePermission.issueItem,
-    EEmployeePermission.updateIssue,
-
-    EEmployeePermission.purchaseItem,
-    EEmployeePermission.updatePurchase,
-
-    EEmployeePermission.registerEmployee,
-    EEmployeePermission.updateEmployeeInfo,
-    EEmployeePermission.updateEmployeePermission,
-
-    EEmployeePermission.addExpense,
-    EEmployeePermission.updateExpense,
-
-    EEmployeePermission.verifyPayment,
-    EEmployeePermission.generateMyReport,
-    EEmployeePermission.generateAccommodationReport,
-    EEmployeePermission.generateRestaurantReport,
-    EEmployeePermission.generateInventoryReport,
-    EEmployeePermission.generateGeneralReport,
-  ],
-};
+import { TMap, isEmpty, toRegex } from "../../../core/utilities/utilities";
+import { EmployeePermissions, JobTitles } from "../../../core/constants";
 
 export interface IEmployee extends Document {
   firstName: string;
   lastName: string;
   middleName: string;
   phone: string;
-  jobTitle: EJobTitles;
+  jobTitle: JobTitles;
   code: string;
   password: string;
   email?: string;
   isActive: boolean;
-  permissions: EEmployeePermission[];
+  permissions: EmployeePermissions[];
   createdAt: Date;
   createdBy: Types.ObjectId;
   updatedAt?: Date;
   updatedBy?: Types.ObjectId;
   deleted: boolean;
-  outdated: boolean;
 }
 
 interface IEmployeeQueryHelpers {
@@ -534,9 +50,7 @@ interface IEmployeeMethods {
   matchPassword(password: string): Promise<boolean>;
 }
 
-interface IEmployeeModel extends Model<IEmployee, IEmployeeQueryHelpers, IEmployeeMethods> {
-  fromJsonString(name: string): Promise<HydratedDocument<IEmployee, IEmployeeMethods>>;
-}
+interface IEmployeeModel extends Model<IEmployee, IEmployeeQueryHelpers, IEmployeeMethods> {}
 
 const employeeSchema = new Schema<
   IEmployee,
@@ -550,7 +64,7 @@ const employeeSchema = new Schema<
   phone: { type: String, required: true, unique: true },
   jobTitle: {
     type: String,
-    enum: Object.values(EJobTitles),
+    enum: Object.values(JobTitles),
     required: true,
   },
   code: { type: String, required: true, unique: true, match: /^\d{4,10}$/ },
@@ -561,7 +75,7 @@ const employeeSchema = new Schema<
     type: [
       {
         type: String,
-        enum: Object.values(EEmployeePermission),
+        enum: Object.values(EmployeePermissions),
       },
     ],
     required: true,
@@ -571,7 +85,6 @@ const employeeSchema = new Schema<
   updatedAt: { type: Date, default: new Date() },
   updatedBy: { type: Schema.Types.ObjectId, ref: "Employee" },
   deleted: { type: Boolean, default: false },
-  outdated: { type: Boolean, default: false },
 });
 
 employeeSchema.query.byCode = function byCode(
@@ -599,10 +112,6 @@ employeeSchema.method(
   }
 );
 
-employeeSchema.static("fromJsonString", function fromJsonString(json: string) {
-  return this.create(JSON.parse(json));
-});
-
 employeeSchema.pre(/^(save|updateOne)$/, { document: true }, async function (next) {
   if (this.isModified("password") || this.isNew) {
     const salt = await genSaltSync(10);
@@ -618,3 +127,56 @@ export const EmployeeModel = model<IEmployee, IEmployeeModel, IEmployeeQueryHelp
   "Employee",
   employeeSchema
 );
+
+export class EmployeeFilterModel {
+  public searchString?: string;
+  public _ids?: string[];
+  public name?: string;
+  public phone?: string;
+  public jobTitle?: string;
+  public isActive?: boolean;
+
+  constructor(param: {
+    searchString?: string;
+    _ids?: string | string[];
+    name?: string;
+    phone?: string;
+    jobTitle?: string;
+    isActive?: boolean;
+  }) {
+    this.searchString = toRegex(param.searchString);
+    this._ids = Array.isArray(param._ids) ? param._ids : param._ids?.split(",");
+    this.name = toRegex(param.name);
+    this.phone = toRegex(param.phone);
+    this.jobTitle = toRegex(param.jobTitle);
+    this.isActive = param.isActive;
+  }
+
+  toMongoFilter(): TMap {
+    let filter: TMap = {};
+
+    if (!isEmpty(this.searchString)) {
+      filter.$or = [
+        { firstName: { $regex: this.searchString } },
+        { lastName: { $regex: this.searchString } },
+        { middleName: { $regex: this.searchString } },
+        { phone: { $regex: this.searchString } },
+        { email: { $regex: this.searchString } },
+      ];
+    } else {
+      if (!isEmpty(this.name))
+        filter.$or = [
+          { firstName: { $regex: this.name } },
+          { lastName: { $regex: this.name } },
+          { middleName: { $regex: this.name } },
+        ];
+
+      if (!isEmpty(this._ids)) filter._id = { $in: this._ids };
+      if (!isEmpty(this.phone)) filter.phone = { $regex: this.phone };
+      if (!isEmpty(this.jobTitle)) filter.jobTitle = { $regex: this.jobTitle };
+      if (!isEmpty(this.isActive)) filter.isActive = this.isActive;
+    }
+
+    return filter;
+  }
+}
