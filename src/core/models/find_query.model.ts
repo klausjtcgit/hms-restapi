@@ -1,5 +1,14 @@
+export type TFilterValue = {
+  equal?: string;
+  not?: string;
+  gt?: string;
+  lt?: string;
+  gte?: string;
+  lte?: string;
+};
+
 export interface IFindQuery {
-  filter?: Record<string, any>;
+  filter?: Record<string, TFilterValue>;
   fields?: Record<string, 0 | 1>;
   options?: {
     sort?: Record<string, -1 | 1>;

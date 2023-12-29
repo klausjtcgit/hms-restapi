@@ -1,5 +1,5 @@
 import { MAX_LIMIT } from "../constants";
-import { FindQueryModel } from "../models/find_query.model";
+import { FindQueryModel, TFilterValue } from "../models/find_query.model";
 import { isEmpty } from "./utilities";
 
 export const toNumber = (potentialNumber: any): number | undefined => {
@@ -16,11 +16,17 @@ export const toDatetime = (potentialNumber: any): Date | undefined => {
 };
 
 export const queryToMongoQuery = (query: any): FindQueryModel => {
-  const _limit: number = toNumber(query.limit) ?? MAX_LIMIT;
-  const _skip: number = toNumber(query.skip) ?? 0;
+  let _limit: number | undefined;
+  let _skip: number | undefined;
+  let _fields: Record<string, 0 | 1> | undefined;
+  let _sort: Record<string, -1 | 1> | undefined;
+  let _filter: Record<string, TFilterValue> | undefined;
+
+  _limit = toNumber(query.limit) ?? MAX_LIMIT;
+  _skip = toNumber(query.skip) ?? 0;
 
   const _fieldsValue = !isEmpty(query.fields) && query.fields.startsWith("-") ? 0 : 1;
-  const _fields: Record<string, 0 | 1> | undefined = isEmpty(query.fields)
+  _fields = isEmpty(query.fields)
     ? undefined
     : Object.fromEntries(
         String(
@@ -32,8 +38,7 @@ export const queryToMongoQuery = (query: any): FindQueryModel => {
           .map((field: string) => [field, _fieldsValue])
           .filter((_) => _[0] !== "")
       );
-
-  const _sort: Record<string, -1 | 1> | undefined = isEmpty(query.sort)
+  _sort = isEmpty(query.sort)
     ? undefined
     : Object.fromEntries(
         query.sort.split(",").map((field: string) => {
@@ -43,8 +48,34 @@ export const queryToMongoQuery = (query: any): FindQueryModel => {
         })
       );
 
-  const _filter = Object.fromEntries(
-    Object.entries(query).filter(([key]) => !["fields", "sort", "limit", "skip"].includes(key))
+  _filter = Object.fromEntries(
+    Object.entries(query).reduce((accumulated: [string, TFilterValue][], [key, value]) => {
+      if (!["fields", "sort", "limit", "skip"].includes(key)) {
+        let _index = accumulated.findIndex((field) => field[0] === key);
+
+        if (_index === -1) {
+          accumulated.push([key.split(/[><!]/)[0], {}]);
+
+          _index = accumulated.length - 1;
+        }
+
+        if (key.endsWith(">")) {
+          accumulated[_index][1].gte = value as string;
+        } else if (key.endsWith("<")) {
+          accumulated[_index][1].lte = value as string;
+        } else if (key.endsWith("!")) {
+          accumulated[_index][1].not = value as string;
+        } else if (key.includes(">")) {
+          accumulated[_index][1].gte = key.split(">")[1];
+        } else if (key.includes("<")) {
+          accumulated[_index][1].lte = key.split("<")[1];
+        } else if (key.includes("!")) {
+          accumulated[_index][1].not = key.split("!")[1];
+        } else accumulated[_index][1].equal = value as string;
+      }
+
+      return accumulated;
+    }, [] as [string, TFilterValue][])
   );
 
   return new FindQueryModel({
