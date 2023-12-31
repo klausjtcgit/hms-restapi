@@ -4,6 +4,10 @@ export const isEmpty = (value: any): boolean => {
   return value == null || value === "" || !Object.keys(value).length;
 };
 
+export const isUndefined = (value: any): boolean => {
+  return value === undefined;
+};
+
 export const stringifyJson = (json: object): string => {
   let stringJson = JSON.stringify(json);
 
