@@ -8,8 +8,9 @@ import {
   model,
 } from "mongoose";
 import { compare, genSaltSync, hashSync } from "bcryptjs";
-import { TMap, isEmpty, toRegex } from "../../../core/utilities/utilities";
+import { TMap, isEmpty, isUndefined, toRegex } from "../../../core/utilities/utilities";
 import { EmployeePermissions, JobTitles } from "../../../core/constants";
+import { TFilterValue } from "../../../core/models/find_query.model";
 
 export interface IEmployee extends Document {
   firstName: string;
@@ -136,20 +137,26 @@ export class EmployeeFilterModel {
   public jobTitle?: string;
   public isActive?: boolean;
 
-  constructor(param: {
-    searchString?: string;
-    _ids?: string | string[];
-    name?: string;
-    phone?: string;
-    jobTitle?: string;
-    isActive?: boolean;
+  constructor(_: {
+    searchString?: TFilterValue;
+    _ids?: TFilterValue;
+    name?: TFilterValue;
+    phone?: TFilterValue;
+    jobTitle?: TFilterValue;
+    isActive?: TFilterValue;
   }) {
-    this.searchString = toRegex(param.searchString);
-    this._ids = Array.isArray(param._ids) ? param._ids : param._ids?.split(",");
-    this.name = toRegex(param.name);
-    this.phone = toRegex(param.phone);
-    this.jobTitle = toRegex(param.jobTitle);
-    this.isActive = param.isActive;
+    this.searchString = isUndefined(_.searchString) ? undefined : toRegex(_.searchString!.equal);
+    this._ids = isUndefined(_._ids)
+      ? undefined
+      : _._ids!.equal
+      ? Array.isArray(_._ids!.equal)
+        ? _._ids!.equal
+        : _._ids!.equal.split(",")
+      : undefined;
+    this.name = isUndefined(_.name) ? undefined : toRegex(_.name!.equal);
+    this.phone = isUndefined(_.phone) ? undefined : toRegex(_.phone!.equal);
+    this.jobTitle = isUndefined(_.jobTitle) ? undefined : toRegex(_.jobTitle!.equal);
+    this.isActive = isUndefined(_.isActive) ? undefined : Boolean(_.isActive!.equal);
   }
 
   toMongoFilter(): TMap {

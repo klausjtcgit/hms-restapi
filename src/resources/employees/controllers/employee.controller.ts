@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorTypes, HTTPStatusCodes } from "../../../core/constants";
+import { HTTPStatusCodes } from "../../../core/constants";
 import { ResponseModel } from "../../../core/models/response.model";
-import { EmployeeFilterModel, IEmployee } from "../models/employee.model";
+import { IEmployee } from "../models/employee.model";
 import { EmployeeService } from "../services/employee.service";
 import {
   globalExceptionHandler,
@@ -14,7 +14,10 @@ export class EmployeeController {
 
   public registerEmployee = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const employee: IEmployee = await this.employeeService.create(req.body as IEmployee);
+      const employee: IEmployee = await this.employeeService.create({
+        ...req.body,
+        createdBy: req.body.employee__id,
+      } as IEmployee);
       const { code, password, ...sanitizedEmployee } = employee.toObject();
 
       if (employee) {
@@ -84,7 +87,7 @@ export class EmployeeController {
     try {
       const employee: IEmployee = await this.employeeService.updateById(
         req.params._id?.toString() ?? "",
-        req.body
+        { ...req.body, updatedBy: req.body.employee__id }
       );
       const { code, password, ...sanitizedEmployee } = employee.toObject();
 
