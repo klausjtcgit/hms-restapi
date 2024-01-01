@@ -6,6 +6,7 @@ import {
 } from "../utilities/exception_handler";
 import jwt, { Secret } from "jsonwebtoken";
 import { TOKEN_KEY } from "../configuration";
+import { IEmployee } from "../../resources/employees/models/employee.model";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   try {
@@ -17,9 +18,9 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
 
     if (isEmpty(accessToken)) unauthorizedExceptionHandler();
     else {
-      const decoded = jwt.verify(accessToken, TOKEN_KEY as Secret);
+      const decoded = jwt.verify(accessToken, TOKEN_KEY as Secret) as IEmployee;
 
-      req.body["$decoded"] = decoded;
+      req.body.employee__id = decoded._id;
       next();
     }
   } catch (error) {

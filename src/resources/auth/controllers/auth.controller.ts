@@ -101,7 +101,7 @@ export class AuthController {
         new ResponseModel({
           success: true,
           status: HTTPStatusCodes.OK,
-          result: { data: { verified: "👍", decoded: req.body.$decoded } },
+          result: { data: { verified: "👍", decoded: req.body.employee__id } },
         })
       );
     } catch (error) {

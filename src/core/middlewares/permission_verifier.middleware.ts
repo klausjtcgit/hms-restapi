@@ -4,11 +4,20 @@ import {
   unauthorizedExceptionHandler,
 } from "../utilities/exception_handler";
 import { EmployeePermissions } from "../constants";
+import jwt, { Secret } from "jsonwebtoken";
+import { TOKEN_KEY } from "../configuration";
+import { IEmployee } from "../../resources/employees/models/employee.model";
 
 export const permissionVerifierMiddleware = (requiredPermissions: EmployeePermissions[]) => {
   return (req: Request, _res: Response, next: NextFunction): void => {
     try {
-      const decoded = req.body.$decoded;
+      const accessToken =
+        req.body.accessToken ||
+        req.query.accessToken ||
+        req.headers["authorization"]?.split(" ")[1] ||
+        req.headers["x-access-token"];
+
+      const decoded = jwt.verify(accessToken, TOKEN_KEY as Secret) as IEmployee;
       const notPermitted: EmployeePermissions[] = [];
 
       requiredPermissions.forEach((requiredPermission: EmployeePermissions) => {
@@ -19,7 +28,7 @@ export const permissionVerifierMiddleware = (requiredPermissions: EmployeePermis
       if (notPermitted.length === 0) next();
       else {
         unauthorizedExceptionHandler(
-          `❗ Current logged-in employee [name='${req.body.$decoded.firstName} ${req.body.$decoded.lastName}', _id: '${req.body.$decoded._id}'] don't have all the required permission to perform and access this resource.`,
+          `❗ Current logged-in employee [name='${decoded.firstName} ${decoded.lastName}', _id: '${decoded._id}'] don't have all the required permission to perform and access this resource.`,
           { notPermitted }
         );
       }
