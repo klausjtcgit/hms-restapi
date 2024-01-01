@@ -66,9 +66,9 @@ export const queryToMongoQuery = (query: any): FindQueryModel => {
         } else if (key.endsWith("!")) {
           accumulated[_index][1].not = value as string;
         } else if (key.includes(">")) {
-          accumulated[_index][1].gte = key.split(">")[1];
+          accumulated[_index][1].gt = key.split(">")[1];
         } else if (key.includes("<")) {
-          accumulated[_index][1].lte = key.split("<")[1];
+          accumulated[_index][1].lt = key.split("<")[1];
         } else if (key.includes("!")) {
           accumulated[_index][1].not = key.split("!")[1];
         } else accumulated[_index][1].equal = value as string;
