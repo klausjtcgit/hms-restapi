@@ -4,6 +4,7 @@ import { ResponseModel } from "./core/models/response.model";
 import { HTTPStatusCodes } from "./core/constants";
 import { EmployeeIndexRoute } from "./resources/employees/routes/index.route";
 import { AuthIndexRoute } from "./resources/auth/routes/index.route";
+import { AccommodationIndexRoute } from "./resources/accommodation/routes/index.route";
 
 export const sampleRoute: Router = Router();
 
@@ -28,5 +29,10 @@ sampleRoute.all("/", async (req: Request, res: Response, next: NextFunction) => 
   }
 });
 
-const app: App = new App([{ router: sampleRoute }, new EmployeeIndexRoute(), new AuthIndexRoute()]);
+const app: App = new App([
+  { router: sampleRoute },
+  new EmployeeIndexRoute(),
+  new AuthIndexRoute(),
+  new AccommodationIndexRoute(),
+]);
 app.listen();

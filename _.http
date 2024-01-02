@@ -1,4 +1,3 @@
-# % +=============================================================================+
 # % > varibales                                                                  ||
 # % +=============================================================================+
 @baseUrl = http://localhost:5000
@@ -6,80 +5,119 @@
 
 
 
-# % +=============================================================================+
 # % > testing > ()                                                               ||
 # % +=============================================================================+
-##  % +---------------------------------------------------------------------------+
 ##  % > testing > somthinng_that_works > ()                                       |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}
 
-##  % +---------------------------------------------------------------------------+
 ##  % > testing > somthinng_that_does_works > ()                                  |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/not_working_route_or_url
 
 
 
-# % +=============================================================================+
 # % > authentication                                                             ||
 # % +=============================================================================+
-##  % +---------------------------------------------------------------------------+
+
 ##  % > authentication > simple_login > (req.body.code)                           |
 ### % +---------------------------------------------------------------------------+
-POST {{baseUrl}}/auth/login
+POST {{ baseUrl }}/auth/login/simple
+# or => POST {{ baseUrl }}/auth/login
 Content-Type: application/json
 
 { "code": "123474"} 
 
-##  % +---------------------------------------------------------------------------+
 ##  % > authentication > advance_login > (req.body.password, req.body.phone)      |
 ### % +---------------------------------------------------------------------------+
-POST {{baseUrl}}/auth/login/advance
+POST {{ baseUrl }}/auth/login/advance
 Content-Type: application/json
 
 { "phone": "254114540081", "password": "password" }
 
-##  % +---------------------------------------------------------------------------+
 ##  % > authentication > verify_employee > ()                                     |
 ### % +---------------------------------------------------------------------------+
-POST {{baseUrl}}/auth/somethingSecure
+POST {{ baseUrl }}/auth/somethingSecure
 Authorization: Bearer {{ accessToken }}
 
 
 
-# % +=============================================================================+
 # % > employees >                                                                ||
 # % +=============================================================================+
-##  % +---------------------------------------------------------------------------+
+
 ##  % > employees > register > (req.body.{...employee})                           |
 ### % +---------------------------------------------------------------------------+
-POST {{baseUrl}}/employees
-Content-Type: application/json
-
-{ "firstName": "Yohannes", "lastName": "tesafy", "middleName": "niguse", "phone": "254114540081", "jobTitle": "software admin", "code": 696969, "password": "password", "email": "klausJTC@gmail.com", "isActive": true }
-
-##  % +---------------------------------------------------------------------------+
-##  % > employees > find_by_filter > (req.query.{...filter}                       |
-### % +---------------------------------------------------------------------------+
-# GET {{baseUrl}}/employees?isActive=true&jobTitle=housekeeper
-GET {{baseUrl}}/employees?name=ene&fields=firstName,lastName,middelName&sort=-lastName
-
-##  % +---------------------------------------------------------------------------+
-##  % > employees > find_by__id > (req.path._id)                                  |
-### % +---------------------------------------------------------------------------+
-GET {{baseUrl}}/employees/_id/657abd9b8ace26d4d1c6147e
-
-##  % +---------------------------------------------------------------------------+
-##  % > employees > find_by__ids > (req.query.[..._ids])                               |
-### % +---------------------------------------------------------------------------+
-GET {{baseUrl}}/employees/_ids?limit=2&sort=firstName&_ids=657abe0c8ace26d4d1c6151f&_ids=657abd9b8ace26d4d1c6147e&_ids=657abd9b8ace26d4d1c61482
-
-##  % +---------------------------------------------------------------------------+
-##  % > employees > update_by__id > (req.path._id, req.body.{...update})          |
-### % +---------------------------------------------------------------------------+
-PATCH {{baseUrl}}/employees/657abe0c8ace26d4d1c6151f
+POST {{ baseUrl }}/employees
 Content-Type: application/json
 Authorization: BearerBearer {{ accessToken }}
 
-{ "password": "password" }
+{
+    "firstName": "Yared",
+    "lastName": "TeRefe",
+    "phone": "2541145400821",
+    "jobTitle": "software admin",
+    "code": 9696961,
+    "password": "password",
+    "email": "yolo@gmail.com",
+    "isActive": true
+}
+
+##  % > employees > find_by_filter > (req.query.{...options}                      |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/employees?fields=-_id,permissions
+
+##  % > employees > _id > find_by__id: (req.path._id)                             |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/employees/_id/657abe0c8ace26d4d1c6151f
+
+##  % > employees > _ids > find_by__ids: (req.query.[..._ids])                    |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/employees/_ids?fields=-permissions&limit=2&sort=firstName&_ids=657abe0c8ace26d4d1c6151f&_ids=657abd9b8ace26d4d1c6147e&_ids=657abd9b8ace26d4d1c61482
+
+##  % > employees > update_by__id > (req.path._id, req.body.{...update})          |
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/employees/657abe0c8ace26d4d1c6151f
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "lastName": "Tesfay" }
+
+
+
+# % > guests >                                                                   ||
+# % +=============================================================================+
+
+##  % > accommodation > guests > register > (req.body.{...guest})                 |
+### % +---------------------------------------------------------------------------+
+POST {{ baseUrl }}/accommodation/guests
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{
+    "firstName": "Lindsey",
+    "lastName": "Alston",
+    "middleName": "Eva",
+    "phone": "254(947) 553-26714",
+    "email": "evaalston@lumbrex.com",
+    "identification": "036b0fda-200f-447c-8cf5-2360ebef2c74",
+    "nationality": "Liechtenstein",
+    "balance": 25000,
+    "isActive": true,
+    "isGroup": false
+}
+
+##  % > accommodation > guests > find_by_filter > (req.query.{...options}         |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/guests?fields=firstName&seach&sort=firstName
+
+##  % > accommodation ? guests > _id > find_by__id > (req.path._id)               |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/guests/_id/65918e25e16aa14d838af0a9
+
+##  % > accommodation > guests > update_by__id > (req.path._id, req.body.{...update})|
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/accommodation/guests/65918e25e16aa14d838af0a9
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "lastName": "updated_secondName",}
