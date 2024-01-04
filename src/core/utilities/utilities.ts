@@ -1,7 +1,7 @@
 export type TMap = Record<string, any>;
 
 export const isEmpty = (value: any): boolean => {
-  return value == null || value === "" || !Object.keys(value).length;
+  return value == null || value === "" || (typeof value === "object" && !Object.keys(value).length);
 };
 
 export const isUndefined = (value: any): boolean => {
