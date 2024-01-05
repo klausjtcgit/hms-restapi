@@ -2,6 +2,7 @@ import { Document, Model, Schema, Types, model } from "mongoose";
 import { TMap, isEmpty, isUndefined } from "../../../core/utilities/utilities";
 import { TFilterValue } from "../../../core/models/find_query.model";
 import { OccupancyStatuses, RoomTypes } from "../../../core/constants";
+import { EmployeeModel } from "../../employees/models/employee.model";
 
 export interface IRoom extends Document {
   number: string;
@@ -31,9 +32,9 @@ const roomSchema = new Schema<IRoom, IRoomModel, IRoomMethods, IRoomQueryHelpers
   OOO: { type: Boolean, default: true },
   problems: { type: [String], default: [] },
   createdAt: { type: Date, default: new Date() },
-  createdBy: { type: Schema.Types.ObjectId, ref: "Room" },
+  createdBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
   updatedAt: { type: Date, default: new Date() },
-  updatedBy: { type: Schema.Types.ObjectId, ref: "Room" },
+  updatedBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
   deleted: { type: Boolean, default: false },
 });
 
