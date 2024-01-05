@@ -1,6 +1,7 @@
 import { Document, Model, Schema, Types, model } from "mongoose";
 import { TMap, isEmpty, isUndefined, toRegex } from "../../../core/utilities/utilities";
 import { TFilterValue } from "../../../core/models/find_query.model";
+import { EmployeeModel } from "../../employees/models/employee.model";
 
 export interface IGuest extends Document {
   firstName: string;
@@ -36,9 +37,9 @@ const guestSchema = new Schema<IGuest, IGuestModel, IGuestMethods, IGuestQueryHe
   isActive: { type: Boolean, default: true },
   isGroup: { type: Boolean, default: false },
   createdAt: { type: Date, default: new Date() },
-  createdBy: { type: Schema.Types.ObjectId, ref: "Guest" },
+  createdBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
   updatedAt: { type: Date, default: new Date() },
-  updatedBy: { type: Schema.Types.ObjectId, ref: "Guest" },
+  updatedBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
   deleted: { type: Boolean, default: false },
 });
 
