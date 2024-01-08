@@ -1,26 +1,26 @@
-# % > varibales                                                                  ||
+# % >varibales                                                                   ||
 # % +=============================================================================+
 @baseUrl = http://localhost:5000
-@accessToken = 
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhYmUwYzhhY2UyNmQ0ZDFjNjE1MWYiLCJmaXJzdE5hbWUiOiJ5b2hhbm5lcyIsImxhc3ROYW1lIjoidGVzYWZ5IiwibWlkZGxlTmFtZSI6Im5pZ3VzZSIsInBob25lIjoiMjU0MTE0NTQwMDgxIiwiam9iVGl0bGUiOiJzb2Z0d2FyZSBhZG1pbiIsImNvZGUiOiI2OTY5NjkiLCJwYXNzd29yZCI6IiQyYSQxMCRESlZ1NkZFdW11d2o3Q01YWlZTNkouUGg4MlN4RzZuMWYwN0xUeGR2Lkk0YjEuUU10MVpkNiIsImVtYWlsIjoia2xhdXNKVENAZ21haWwuY29tIiwiaXNBY3RpdmUiOnRydWUsInBlcm1pc3Npb25zIjpbInJlZ2lzdGVyIGd1ZXN0IiwidXBkYXRlIGd1ZXN0IGluZm8iLCJjcmVhdGUgcm9vbSIsInVwZGF0ZSByb29tIGluZm8iLCJ1cGRhdGUgcm9vbSBzdGF0dXMiLCJib29raW5nIGEgcm9vbSIsImdpZnQgYm9va2luZyBhIHJvb20iLCJ2b2lkIGJvb2tpbmcgYSByb29tIiwidXBkYXRlIGJvb2tpbmcgaW5mbyIsInVwZGF0ZSBib29raW5nIHByaWNlIiwiYWNjZXB0IGFjY29tbW9kYXRpb24gcGF5bWVudCIsInVwZGF0ZSBhY2NvbW1vZGF0aW9uIHBheW1lbnQiLCJtYWtlIG1lbnUiLCJ1cGRhdGUgbWVudSIsInVwZGF0ZSBtZW51IHByaWNlIiwicG9zdCBvcmRlciIsInBvc3Qgb3JkZXIiLCJwb3N0IG9yZGVyIiwidXBkYXRlIG9yZGVyIiwidXBkYXRlIGFsbCBvcmRlciIsImdpZnQgb3JkZXIiLCJ2b2lkIG9yZGVyIiwidHJhbnNmZXIgb3JkZXIiLCJhY2NlcHQgcmVzdGF1cmFudCBwYXltZW50IiwidXBkYXRlIHJlc3RhdXJhbnQgcGF5bWVudCIsImFkZCBpdGVtIHRvIGludmVudG9yeSIsInVwZGF0ZSBpdGVtIGluZm8iLCJtYWtlIG1lbnUgdnMgcmVjaXBlIiwic3BvaWxhZ2UgbWlzY2VsbGFuZW91cyB1c2FnZSIsImlzc3VlIGl0ZW0iLCJ1cGRhdGUgaXNzdWUiLCJwdXJjaGFzZSBpdGVtIiwidXBkYXRlIHB1cmNoYXNlIiwicmVnaXN0ZXIgZW1wbG95ZWUiLCJ1cGRhdGUgZW1wbG95ZWUgaW5mbyIsInVwZGF0ZSBlbXBsb3llZSBwZXJtaXNzaW9uIiwiYWRkIGV4cGVuc2UiLCJ1cGRhdGUgZXhwZW5zZSIsInZlcmlmeSBwYXltZW50IiwiZ2VuZXJhdGUgbXkgcmVwb3J0IiwiZ2VuZXJhdGUgYWNjb21tb2RhdGlvbiByZXBvcnQiLCJnZW5lcmF0ZSByZXN0YXVyYW50IHJlcG9ydCIsImdlbmVyYXRlIGludmVudG9yeSByZXBvcnQiLCJnZW5lcmF0ZSBnZW5lcmFsIHJlcG9ydCJdLCJjcmVhdGVkQXQiOiIyMDIzLTEyLTE0VDA4OjMyOjEzLjkwNFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTEyLTE0VDA4OjMyOjEzLjkwNFoiLCJkZWxldGVkIjpmYWxzZSwib3V0ZGF0ZWQiOmZhbHNlLCJfX3YiOjAsImlhdCI6MTcwNDAxNzI5OCwiZXhwIjoxNzI1NjE3Mjk4fQ.rUlXD61vHjscirwwX1U6Sfdtgn2b8_jjZwuYi8KCzrU
 
 
 
-# % > testing > ()                                                               ||
+# % >testing>()                                                                  ||
 # % +=============================================================================+
-##  % > testing > somthinng_that_works > ()                                       |
+##  % >testing>somthinng_that_works>()                                            |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}
 
-##  % > testing > somthinng_that_does_works > ()                                  |
+##  % >testing>somthinng_that_does_works>()                                       |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/not_working_route_or_url
 
 
 
-# % > authentication                                                             ||
+# % >authentication                                                              ||
 # % +=============================================================================+
 
-##  % > authentication > simple_login > (req.body.code)                           |
+##  % >authentication>simple_login>(req.body.code)                                |
 ### % +---------------------------------------------------------------------------+
 POST {{ baseUrl }}/auth/login/simple
 # or => POST {{ baseUrl }}/auth/login
@@ -28,24 +28,24 @@ Content-Type: application/json
 
 { "code": "123474"} 
 
-##  % > authentication > advance_login > (req.body.password, req.body.phone)      |
+##  % >authentication>advance_login>(req.body.password, req.body.phone)           |
 ### % +---------------------------------------------------------------------------+
 POST {{ baseUrl }}/auth/login/advance
 Content-Type: application/json
 
 { "phone": "254114540081", "password": "password" }
 
-##  % > authentication > verify_employee > ()                                     |
+##  % >authentication>verify_employee>()                                          |
 ### % +---------------------------------------------------------------------------+
 POST {{ baseUrl }}/auth/somethingSecure
 Authorization: Bearer {{ accessToken }}
 
 
 
-# % > employees >                                                                ||
+# % >employees>                                                                  ||
 # % +=============================================================================+
 
-##  % > employees > register > (req.body.{...employee})                           |
+##  % >employees>register>(req.body.{...employee})                                |
 ### % +---------------------------------------------------------------------------+
 POST {{ baseUrl }}/employees
 Content-Type: application/json
@@ -62,19 +62,19 @@ Authorization: BearerBearer {{ accessToken }}
     "isActive": true
 }
 
-##  % > employees > find_by_filter > (req.query.{...options}                      |
+##  % >employees>find_by_filter>(req.query.{...options}                           |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/employees?fields=-_id,permissions
 
-##  % > employees > _id > find_by__id: (req.path._id)                             |
+##  % >employees>_id>find_by__id: (req.path._id)                                  |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/employees/_id/657abe0c8ace26d4d1c6151f
 
-##  % > employees > _ids > find_by__ids: (req.query.[..._ids])                    |
+##  % >employees>_ids>find_by__ids: (req.query.[..._ids])                         |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/employees/_ids?fields=-permissions&limit=2&sort=firstName&_ids=657abe0c8ace26d4d1c6151f&_ids=657abd9b8ace26d4d1c6147e&_ids=657abd9b8ace26d4d1c61482
 
-##  % > employees > update_by__id > (req.path._id, req.body.{...update})          |
+##  % >employees>update_by__id>(req.path._id, req.body.{...update})               |
 ### % +---------------------------------------------------------------------------+
 PATCH {{ baseUrl }}/employees/657abe0c8ace26d4d1c6151f
 Content-Type: application/json
@@ -84,10 +84,10 @@ Authorization: BearerBearer {{ accessToken }}
 
 
 
-# % > guests >                                                                   ||
+# % >guests>                                                                     ||
 # % +=============================================================================+
 
-##  % > accommodation > guests > register > (req.body.{...guest})                 |
+##  % >accommodation>guests>register>(req.body.{...guest})                        |
 ### % +---------------------------------------------------------------------------+
 POST {{ baseUrl }}/accommodation/guests
 Content-Type: application/json
@@ -97,8 +97,7 @@ Authorization: BearerBearer {{ accessToken }}
     "firstName": "Lindsey",
     "lastName": "Alston",
     "middleName": "Eva",
-    "phone": "254(947) 553-26714",
-    "email": "evaalston@lumbrex.com",
+    "phone": "254(947) 553-26711",
     "identification": "036b0fda-200f-447c-8cf5-2360ebef2c74",
     "nationality": "Liechtenstein",
     "balance": 25000,
@@ -106,18 +105,121 @@ Authorization: BearerBearer {{ accessToken }}
     "isGroup": false
 }
 
-##  % > accommodation > guests > find_by_filter > (req.query.{...options}         |
+##  % >accommodation>guests>find_by_filter>(req.query.{...options}                |
 ### % +---------------------------------------------------------------------------+
 GET {{ baseUrl }}/accommodation/guests?fields=firstName&seach&sort=firstName
 
-##  % > accommodation ? guests > _id > find_by__id > (req.path._id)               |
+##  % >accommodation>guests>_id>find_by__id>(req.path._id)                        |
 ### % +---------------------------------------------------------------------------+
-GET {{ baseUrl }}/accommodation/guests/_id/65918e25e16aa14d838af0a9
+GET {{ baseUrl }}/accommodation/guests/_id/65964677d64ee84df565156e
 
-##  % > accommodation > guests > update_by__id > (req.path._id, req.body.{...update})|
+##  % >accommodation>guests>update_by__id>(req.path._id, req.body.{...update})    |
 ### % +---------------------------------------------------------------------------+
-PATCH {{ baseUrl }}/accommodation/guests/65918e25e16aa14d838af0a9
+PATCH {{ baseUrl }}/accommodation/guests/65978da8cca530dca4754c52
 Content-Type: application/json
 Authorization: BearerBearer {{ accessToken }}
 
-{ "lastName": "updated_secondName",}
+{ "lastName": "updated_secondName" }
+
+
+
+# % >rooms>                                                                      ||
+# % +=============================================================================+
+
+##  % >accommodation>rooms>creat>(req.body.{...guest})                            |
+### % +---------------------------------------------------------------------------+
+POST {{ baseUrl }}/accommodation/rooms
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{
+    "number": 0,
+    "type": "family",
+    "floor": "mezzanine",
+    "occupancy": "blocked",
+    "isClean": 1,
+    "OOO": 0,
+    "problems": [ "some random problem" ]
+}
+
+##  % >accommodation>rooms>find_by_filter>(req.query.{...options}                 |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/rooms?OOO=1&fields=number,floor,type&sort=-type
+
+##  % >accommodation>rooms>_ids>find_by__ids>(req.path._id)                       |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/rooms/_ids?_ids=65964677d64ee84df565156b
+
+##  % >accommodation>rooms>_id>find_by__id>(req.path._id)                         |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/rooms/_id/65964677d64ee84df565156b
+
+##  % >accommodation>rooms>update>(req.qury.{...filter}req.body.{...update})      |
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/accommodation/rooms?number=0
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "OOO": 1}
+
+##  % >accommodation>rooms>update_by__id>(req.path._id, req.body.{...update})     |
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/accommodation/rooms/65964677d64ee84df565156b
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "problems": [ "it does not have a bed frame/support!" ] }
+
+
+
+# % >bookings>                                                                   ||
+# % +=============================================================================+
+
+##  % >accommodation>bookings>creat>(req.body.{...guest})                         |
+### % +---------------------------------------------------------------------------+
+POST {{ baseUrl }}/accommodation/bookings
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{
+    "guest": "65964677d64ee84df565156e",
+    "payer": "65964677d64ee84df565156b",
+    "room": "65964677d64ee84df565156b",
+    "occupiedDate": "2023-dec-25",
+    "chickIn": "2023-dec-25 12:32:22",
+    "pax": 2,
+    "rate": 3000,
+    "balance": 3000,
+    "mealPlan": "breakfast",
+    "mealPrice": 300,
+    "marketSource": "walk-in"
+}
+
+##  % >accommodation>bookings>find_by_filter>(req.query.{...options}              |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/bookings?balance=2500
+
+##  % >accommodation>bookings>_ids>find_by__ids>(req.path._id)                    |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/bookings/_ids?_ids=659b8d75574e571215aeab99,659b8d76574e571215aeaccb,659b8d74574e571215aeab09
+
+##  % >accommodation>bookings>_id>find_by__id>(req.path._id)                      |
+### % +---------------------------------------------------------------------------+
+GET {{ baseUrl }}/accommodation/bookings/_id/659b8d75574e571215aeab99
+
+##  % >accommodation>bookings>update>(req.qury.{...filter}req.body.{...update})   |
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/accommodation/bookings?balance=2500
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "balance": 3000}
+
+##  % >accommodation>bookings>update_by__id>(req.path._id, req.body.{...update})  |
+### % +---------------------------------------------------------------------------+
+PATCH {{ baseUrl }}/accommodation/bookings/659b8d75574e571215aeab99
+Content-Type: application/json
+Authorization: BearerBearer {{ accessToken }}
+
+{ "pax": 1, "rate": 3300 }
+
