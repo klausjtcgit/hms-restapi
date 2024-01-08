@@ -16,7 +16,7 @@ export class BookingController {
     try {
       const booking: IBooking = await this.bookingService.create({
         ...req.body,
-        createdBy: req.body.employee__id,
+        receptionId: req.body.employee__id,
       } as IBooking);
 
       if (booking) {

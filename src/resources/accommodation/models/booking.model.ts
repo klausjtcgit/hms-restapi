@@ -7,9 +7,11 @@ import { GuestModel } from "./guest.model";
 import { RoomModel } from "./room.model";
 
 export interface IBooking extends Document {
-  guest: Types.ObjectId;
-  payer: Types.ObjectId;
-  room: Types.ObjectId;
+  receptionId: Types.ObjectId;
+  guestId: Types.ObjectId;
+  payerId: Types.ObjectId;
+  roomId: Types.ObjectId;
+  bookedAt?: Date;
   occupiedDate: Date;
   checkIn: Date;
   checkOut?: Date;
@@ -21,8 +23,6 @@ export interface IBooking extends Document {
   marketSource: MarketSources;
   commission?: Types.ObjectId;
   note?: string;
-  createdAt?: Date;
-  createdBy: Types.ObjectId;
   updatedAt?: Date;
   updatedBy?: Types.ObjectId;
   deleted: boolean;
@@ -33,9 +33,10 @@ interface IBookingMethods {}
 interface IBookingModel extends Model<IBooking, IBookingQueryHelpers, IBookingMethods> {}
 
 const bookingSchema = new Schema<IBooking, IBookingModel, IBookingMethods, IBookingQueryHelpers>({
-  guest: { type: Schema.Types.ObjectId, required: true, ref: GuestModel },
-  payer: { type: Schema.Types.ObjectId, required: true, ref: GuestModel },
-  room: { type: Schema.Types.ObjectId, required: true, ref: RoomModel },
+  receptionId: { type: Schema.Types.ObjectId, required: true, ref: EmployeeModel },
+  guestId: { type: Schema.Types.ObjectId, required: true, ref: GuestModel },
+  payerId: { type: Schema.Types.ObjectId, required: true, ref: GuestModel },
+  roomId: { type: Schema.Types.ObjectId, required: true, ref: RoomModel },
   occupiedDate: { type: Date, required: true },
   checkIn: { type: Date, required: true },
   checkOut: { type: Date },
@@ -47,14 +48,13 @@ const bookingSchema = new Schema<IBooking, IBookingModel, IBookingMethods, IBook
   marketSource: { type: String, required: true, enum: Object.values(MarketSources) },
   commission: { type: Schema.Types.ObjectId, ref: RoomModel },
   note: { type: String },
-  createdAt: { type: Date, default: new Date() },
-  createdBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
+  bookedAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
   updatedBy: { type: Schema.Types.ObjectId, ref: EmployeeModel },
   deleted: { type: Boolean, default: false },
 });
 
-// TODO: added pre function that checks if guest, room, employee with that _id really do exist
+// TODO: added pre function that checks if guestId, roomId, employee with that _id really do exist
 
 export const BookingModel = model<IBooking, IBookingModel, IBookingQueryHelpers>(
   "Booking",
@@ -63,9 +63,9 @@ export const BookingModel = model<IBooking, IBookingModel, IBookingQueryHelpers>
 
 export class BookingFilterModel {
   public _ids?: string[];
-  public guest?: string;
-  public payer?: string;
-  public room?: string;
+  public guestId?: string;
+  public payerId?: string;
+  public roomId?: string;
   public occupiedDate?: Record<string, Date>;
   public checkIn?: Record<string, Date>;
   public rate?: Record<string, number>;
@@ -76,9 +76,9 @@ export class BookingFilterModel {
 
   constructor(_: {
     _ids?: TFilterValue;
-    guest?: TFilterValue;
-    payer?: TFilterValue;
-    room?: TFilterValue;
+    guestId?: TFilterValue;
+    payerId?: TFilterValue;
+    roomId?: TFilterValue;
     occupiedDate?: TFilterValue;
     checkIn?: TFilterValue;
     rate?: TFilterValue;
@@ -94,9 +94,9 @@ export class BookingFilterModel {
         ? _._ids!.equal
         : _._ids!.equal.split(",")
       : undefined;
-    this.guest = isUndefined(_.guest) ? undefined : _.guest!.equal;
-    this.payer = isUndefined(_.payer) ? undefined : _.payer!.equal;
-    this.room = isUndefined(_.room) ? undefined : _.room!.equal;
+    this.guestId = isUndefined(_.guestId) ? undefined : _.guestId!.equal;
+    this.payerId = isUndefined(_.payerId) ? undefined : _.payerId!.equal;
+    this.roomId = isUndefined(_.roomId) ? undefined : _.roomId!.equal;
 
     if (!isUndefined(_.occupiedDate)) {
       this.occupiedDate = {};
@@ -147,9 +147,9 @@ export class BookingFilterModel {
     let filter: TMap = {};
 
     if (!isEmpty(this._ids)) filter._id = { $in: this._ids };
-    if (!isEmpty(this.guest)) filter.guest = this.guest;
-    if (!isEmpty(this.payer)) filter.payer = this.payer;
-    if (!isEmpty(this.room)) filter.room = this.room;
+    if (!isEmpty(this.guestId)) filter.guestId = this.guestId;
+    if (!isEmpty(this.payerId)) filter.payerId = this.payerId;
+    if (!isEmpty(this.roomId)) filter.roomId = this.roomId;
     if (!isEmpty(this.occupiedDate)) filter.occupiedDate = this.occupiedDate;
     if (!isEmpty(this.checkIn)) filter.checkIn = this.checkIn;
     if (!isEmpty(this.rate)) filter.rate = this.rate;
