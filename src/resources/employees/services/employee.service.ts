@@ -435,14 +435,24 @@ export class EmployeeService implements IService<IEmployee> {
     query: FindQueryModel,
     updatedData: TMap
   ): Promise<IUpdateResponse<IEmployee>> => {
-    const employees = await EmployeeModel.find(query);
+    const employees = await EmployeeModel.find(
+      new EmployeeFilterModel(query.filter ?? {}).toMongoFilter()
+    );
+    let affectedCount: number = 0;
 
     for (let i = 0; i < employees.length; i++) {
       employees[i].$set(updatedData);
-      await employees[i].save();
+      if (
+        Object.keys(employees[i].getChanges().$set!).filter(
+          (_) => _ !== "updatedAt" && _ !== "updatedBy"
+        ).length
+      ) {
+        await employees[i].save();
+        affectedCount += 1;
+      }
     }
 
-    return { affected: employees, count: { matched: 0, affected: 0 } };
+    return { affected: employees, count: { matched: employees.length, affected: affectedCount } };
   };
 
   updateById = async (_id: string, updateData: TMap): Promise<IEmployee> => {
@@ -450,8 +460,15 @@ export class EmployeeService implements IService<IEmployee> {
 
     if (!employee) notFoundExceptionHandler("employee", { _id: _id });
     else {
+      const _employee = employee;
       employee.$set(updateData);
-      await employee.save();
+      if (
+        Object.keys(employee.getChanges().$set!).filter(
+          (_) => _ !== "updatedAt" && _ !== "updatedBy"
+        ).length
+      ) {
+        await employee.save();
+      }
 
       return employee;
     }
