@@ -36,14 +36,22 @@ export class GuestService implements IService<IGuest> {
   };
 
   update = async (query: FindQueryModel, updatedData: TMap): Promise<IUpdateResponse<IGuest>> => {
-    const guests = await GuestModel.find(query);
+    const guests = await GuestModel.find(new GuestFilterModel(query.filter ?? {}).toMongoFilter());
+    let affectedCount: number = 0;
 
     for (let i = 0; i < guests.length; i++) {
       guests[i].$set(updatedData);
-      await guests[i].save();
+      if (
+        Object.keys(guests[i].getChanges().$set!).filter(
+          (_) => _ !== "updatedAt" && _ !== "updatedBy"
+        ).length
+      ) {
+        await guests[i].save();
+        affectedCount += 1;
+      }
     }
 
-    return { affected: guests, count: { matched: 0, affected: 0 } };
+    return { affected: guests, count: { matched: guests.length, affected: affectedCount } };
   };
 
   updateById = async (_id: string, updateData: TMap): Promise<IGuest> => {
@@ -51,8 +59,14 @@ export class GuestService implements IService<IGuest> {
 
     if (!guest) notFoundExceptionHandler("guest", { _id: _id });
     else {
+      const _guest = guest;
       guest.$set(updateData);
-      await guest.save();
+      if (
+        Object.keys(guest.getChanges().$set!).filter((_) => _ !== "updatedAt" && _ !== "updatedBy")
+          .length
+      ) {
+        await guest.save();
+      }
 
       return guest;
     }
