@@ -192,6 +192,34 @@ export const OccupancyStatusesMapping: Record<string, OccupancyStatuses> = {
   maintenance: OccupancyStatuses.maintenance,
 };
 
+export enum MealPlans {
+  roomOnly = "room only",
+  breakfast = "breakfast",
+  halfBoard = "half board",
+  fullBoard = "full board",
+  custom = "custom",
+}
+export const MealPlansMapping: Record<string, MealPlans> = {
+  "room only": MealPlans.roomOnly,
+  breakfast: MealPlans.breakfast,
+  "half board": MealPlans.halfBoard,
+  "full board": MealPlans.fullBoard,
+  custom: MealPlans.custom,
+};
+
+export enum MarketSources {
+  walkIn = "walk-in",
+  online = "online",
+  agent = "agent",
+  others = "others",
+}
+export const MarketSourcesMapping: Record<string, MarketSources> = {
+  "walk-in": MarketSources.walkIn,
+  online: MarketSources.online,
+  agent: MarketSources.agent,
+  others: MarketSources.others,
+};
+
 export enum ErrorTypes {
   UNAUTHENTICATED = "unauthenticated",
   UNAUTHORIZED = "unauthorized",
