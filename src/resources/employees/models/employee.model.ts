@@ -11,6 +11,7 @@ import { compare, genSaltSync, hashSync } from "bcryptjs";
 import { TMap, isEmpty, isUndefined, toRegex } from "../../../core/utilities/utilities";
 import { EmployeePermissions, JobTitles } from "../../../core/constants";
 import { TFilterValue } from "../../../core/models/find_query.model";
+import { toBoolean } from "../../../core/utilities/conversion_helpers";
 
 export interface IEmployee extends Document {
   firstName: string;
@@ -156,7 +157,7 @@ export class EmployeeFilterModel {
     this.name = isUndefined(_.name) ? undefined : toRegex(_.name!.equal);
     this.phone = isUndefined(_.phone) ? undefined : toRegex(_.phone!.equal);
     this.jobTitle = isUndefined(_.jobTitle) ? undefined : toRegex(_.jobTitle!.equal);
-    this.isActive = isUndefined(_.isActive) ? undefined : Boolean(_.isActive!.equal);
+    this.isActive = isUndefined(_.isActive) ? undefined : toBoolean(_.isActive!.equal);
   }
 
   toMongoFilter(): TMap {
