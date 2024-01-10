@@ -3,6 +3,7 @@ import { TMap, isEmpty, isUndefined } from "../../../core/utilities/utilities";
 import { TFilterValue } from "../../../core/models/find_query.model";
 import { OccupancyStatuses, RoomTypes } from "../../../core/constants";
 import { EmployeeModel } from "../../employees/models/employee.model";
+import { toBoolean } from "../../../core/utilities/conversion_helpers";
 
 export interface IRoom extends Document {
   number: string;
@@ -71,8 +72,8 @@ export class RoomFilterModel {
     this.type = isUndefined(_.type) ? undefined : _.type!.equal;
     this.floor = isUndefined(_.floor) ? undefined : _.floor!.equal;
     this.occupancy = isUndefined(_.occupancy) ? undefined : _.occupancy!.equal;
-    this.isClean = isUndefined(_.isClean) ? undefined : Boolean(_.isClean!.equal);
-    this.OOO = isUndefined(_.OOO) ? undefined : Boolean(_.OOO!.equal);
+    this.isClean = isUndefined(_.isClean) ? undefined : toBoolean(_.isClean!.equal);
+    this.OOO = isUndefined(_.OOO) ? undefined : toBoolean(_.OOO!.equal);
     this.problems = isUndefined(_.problems) ? undefined : _.occupancy!.equal;
   }
 

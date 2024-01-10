@@ -2,6 +2,7 @@ import { Document, Model, Schema, Types, model } from "mongoose";
 import { TMap, isEmpty, isUndefined, toRegex } from "../../../core/utilities/utilities";
 import { TFilterValue } from "../../../core/models/find_query.model";
 import { EmployeeModel } from "../../employees/models/employee.model";
+import { toBoolean } from "../../../core/utilities/conversion_helpers";
 
 export interface IGuest extends Document {
   firstName: string;
@@ -89,8 +90,8 @@ export class GuestFilterModel {
       if (!isEmpty(_.balance?.lte)) this.balance.$lte = Number(_.balance!.lte);
     }
 
-    this.isActive = isUndefined(_.isActive) ? undefined : Boolean(_.isActive!.equal);
-    this.isGroup = isUndefined(_.isActive) ? undefined : Boolean(_.isActive!.equal);
+    this.isActive = isUndefined(_.isActive) ? undefined : toBoolean(_.isActive!.equal);
+    this.isGroup = isUndefined(_.isGroup) ? undefined : toBoolean(_.isGroup!.equal);
   }
 
   toMongoFilter(): TMap {
