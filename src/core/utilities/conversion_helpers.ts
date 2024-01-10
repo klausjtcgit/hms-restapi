@@ -6,8 +6,12 @@ export const toNumber = (potentialNumber: any): number | undefined => {
   return Number(potentialNumber) || undefined;
 };
 
-export const to = (potentialNumber: any): number | undefined => {
-  return Number(potentialNumber) || undefined;
+export const toBoolean = (potentialBoolean: any): boolean => {
+  return typeof potentialBoolean === "number"
+    ? potentialBoolean === 0
+      ? false
+      : true
+    : ["true", "yes", "yep", "correct"].includes(potentialBoolean);
 };
 
 export const toDatetime = (potentialNumber: any): Date | undefined => {
