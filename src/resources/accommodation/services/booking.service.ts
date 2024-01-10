@@ -5,6 +5,7 @@ import { notFoundExceptionHandler } from "../../../core/utilities/exception_hand
 import { TMap } from "../../../core/utilities/utilities";
 import { IUpdateResponse } from "../../../core/interfaces/update_response.interface";
 import { FindQueryModel } from "../../../core/models/find_query.model";
+import { GuestModel } from "../models/guest.model";
 
 export class BookingService implements IService<IBooking> {
   create = async (newBooking: IBooking): Promise<IBooking> => {
@@ -14,6 +15,7 @@ export class BookingService implements IService<IBooking> {
 
     if (!error) {
       await booking.save();
+      await GuestModel.updateOne({ _id: booking.guestId }, { $inc: { balance: booking.rate } });
       return booking;
     } else throw error;
   };
